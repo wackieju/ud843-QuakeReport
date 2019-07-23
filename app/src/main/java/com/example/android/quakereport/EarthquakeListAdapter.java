@@ -32,7 +32,7 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         Earthquake earthquake = getItem(position);
 
         if(earthquake !=null){
-            magnitudeTextView.setText(String.format(Float.toString(earthquake.getMagnitude())));
+            magnitudeTextView.setText(String.format(Double.toString(earthquake.getMagnitude())));
             locationTextView.setText(earthquake.getLocation());
             dateTextView.setText(earthquake.getDate());
         }
