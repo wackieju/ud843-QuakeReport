@@ -33,11 +33,11 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         Earthquake earthquake = getItem(position);
 
 
-        TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude_text_view);
-        TextView locationTextView = (TextView) listItemView.findViewById(R.id.location_text_view);
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_text_view);
+        TextView magnitudeTextView = (TextView) listItemView.findViewById(R.id.magnitude);
+        TextView locationTextView = (TextView) listItemView.findViewById(R.id.primary_location);
+        TextView dateTextView = (TextView) listItemView.findViewById(R.id.date);
         TextView timeTextView = (TextView) listItemView.findViewById(R.id.time);
-        TextView locationOffsetTextView = (TextView) listItemView.findViewById(R.id.location_offset_text_view);
+        TextView locationOffsetTextView = (TextView) listItemView.findViewById(R.id.location_offset);
 
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeTextView.getBackground();
 
