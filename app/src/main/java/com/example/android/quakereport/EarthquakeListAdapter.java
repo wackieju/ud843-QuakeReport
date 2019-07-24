@@ -1,8 +1,10 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
-        if(listItemView == null){
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.earthquake_list_item, parent, false);
         }
         Earthquake earthquake = getItem(position);
@@ -37,11 +39,19 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
         TextView timeTextView = (TextView) listItemView.findViewById(R.id.time);
         TextView locationOffsetTextView = (TextView) listItemView.findViewById(R.id.location_offset_text_view);
 
-        if(earthquake !=null){
+        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeTextView.getBackground();
+
+        if (earthquake != null) {
+
+            int magnitudeColor = getMagnitudeColor(earthquake.getMagnitude());
+            magnitudeCircle.setColor(magnitudeColor);
+
+
             double magnitude = earthquake.getMagnitude();
             DecimalFormat formatter = new DecimalFormat("0.0");
             String magOutput = formatter.format(magnitude);
             magnitudeTextView.setText(magOutput);
+
             String originalLocation = earthquake.getLocation();
             String primaryLocation;
             String locationOffset;
@@ -53,16 +63,63 @@ public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
                 locationOffset = getContext().getString(R.string.near_the);
                 primaryLocation = originalLocation;
             }
+
             locationOffsetTextView.setText(locationOffset);
             locationTextView.setText(primaryLocation);
+
             Date date = new Date(earthquake.getTimeInMilliseconds());
+
             String formattedDate = formatDate(date);
             dateTextView.setText(formattedDate);
+
             String formattedTime = formateTime(date);
             timeTextView.setText(formattedTime);
         }
 
         return listItemView;
+    }
+
+    private int getMagnitudeColor(double magnitude) {
+        int magnitudeColorResourceId;
+        int magFloor = (int) Math.floor(magnitude);
+        switch (magFloor) {
+            case 0:
+            case 1:
+                magnitudeColorResourceId = R.color.magnitude1;
+                break;
+            case 2:
+                magnitudeColorResourceId = R.color.magnitude2;
+                break;
+            case 3:
+                magnitudeColorResourceId = R.color.magnitude3;
+                break;
+            case 4:
+                magnitudeColorResourceId = R.color.magnitude4;
+                break;
+            case 5:
+                magnitudeColorResourceId = R.color.magnitude5;
+                break;
+            case 6:
+                magnitudeColorResourceId = R.color.magnitude6;
+                break;
+            case 7:
+                magnitudeColorResourceId = R.color.magnitude7;
+                break;
+            case 8:
+                magnitudeColorResourceId = R.color.magnitude8;
+                break;
+            case 9:
+                magnitudeColorResourceId = R.color.magnitude9;
+                break;
+            case 10:
+                magnitudeColorResourceId = R.color.magnitude10plus;
+                break;
+            default:
+                magnitudeColorResourceId = R.color.magnitude10plus;
+
+        }
+
+        return ContextCompat.getColor(getContext(),magnitudeColorResourceId);
     }
 
     private String formateTime(Date date) {
