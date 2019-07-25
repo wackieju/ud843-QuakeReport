@@ -1,4 +1,4 @@
-activitypackage com.example.android.quakereport;
+package com.example.android.quakereport;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
