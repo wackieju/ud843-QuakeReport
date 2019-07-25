@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,6 +31,8 @@ import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
+    private static String queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     @Override
@@ -38,7 +41,7 @@ public class EarthquakeActivity extends AppCompatActivity {
         setContentView(R.layout.earthquake_activity);
 
         // Create a fake list of earthquake locations.
-        List<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+        List<Earthquake> earthquakes = QueryUtils.extractEarthquakes(queryUrl);
 
 
         // Find a reference to the {@link ListView} in the layout
@@ -61,5 +64,17 @@ public class EarthquakeActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>>{
+
+        @Override
+        protected List<Earthquake> doInBackground(String... strings) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Earthquake> earthquakes) {
+            super.onPostExecute(earthquakes);
+        }
     }
 }
