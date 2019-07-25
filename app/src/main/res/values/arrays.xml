@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <string-array name="settings_order_by_labels">
         <item>@string/settings_order_by_magnitude_label</item>
         <item>@string/settings_order_by_most_recent_label</item>
@@ -9,4 +9,10 @@
         <item>@string/settings_order_by_magnitude_value</item>
         <item>@string/settings_order_by_most_recent_value</item>
     </string-array>
+    <ListPreference
+        android:defaultValue="@string/settings_order_by_default"
+        android:entries="@array/settings_order_by_labels"
+        android:entryValues="@array/settings_order_by_values"
+        android:key="@string/settings_order_by_key"
+        android:title="@string/settings_order_by_label" />
 </resources>
