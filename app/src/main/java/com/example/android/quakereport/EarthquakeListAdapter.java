@@ -15,11 +15,12 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EarthquakeListAdapter extends ArrayAdapter<Earthquake> {
     private static final String LOCATION_SEPARATOR = "of";
 
-    public EarthquakeListAdapter(@NonNull Context context, ArrayList<Earthquake> earthquakes) {
+    public EarthquakeListAdapter(@NonNull Context context, List<Earthquake> earthquakes) {
         super(context, 0, earthquakes);
     }
 
