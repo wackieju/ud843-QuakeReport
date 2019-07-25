@@ -38,14 +38,10 @@ public final class QueryUtils {
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static List<Earthquake> extractEarthquakes(String queryUrl) {
+    public static List<Earthquake> fetchEarthquakeData(String queryUrl) {
         URL url = createUrl(queryUrl);
         String jsonResponse = null;
-        // Create an empty ArrayList that we can start adding earthquakes to
 
-        // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
             // build up a list of Earthquake objects with the corresponding data.
             jsonResponse = makeHttpRequest(url);
@@ -69,11 +65,12 @@ public final class QueryUtils {
         List<Earthquake> earthquakes = new ArrayList<>();
         try {
             JSONObject root = new JSONObject(jsonResponse);
-            JSONArray features = root.getJSONArray("Feature");
+            JSONArray features = root.getJSONArray("features");
 
             for (int i = 0; i < features.length(); i++) {
                 JSONObject currentEarthquake = features.getJSONObject(i);
                 JSONObject properties = currentEarthquake.getJSONObject("properties");
+                //get specific properties
                 Double magnitude = properties.getDouble("mag");
                 String location = properties.getString("place");
                 String detailURL = properties.getString("url");
@@ -108,7 +105,7 @@ public final class QueryUtils {
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {

@@ -20,10 +20,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -68,17 +67,19 @@ public class EarthquakeActivity extends AppCompatActivity {
 
         @Override
         protected List<Earthquake> doInBackground(String... urls) {
+            Log.d(LOG_TAG, Integer.toString(urls.length));
             if(urls.length < 1 && urls[0] == null){
+
                 return null;
             }
-            List<Earthquake> result = QueryUtils.extractEarthquakes(urls[0]);
+            List<Earthquake> result = QueryUtils.fetchEarthquakeData(urls[0]);
             return result;
         }
 
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
             mAdapter.clear();
-            if(earthquakes!=null && earthquakes.isEmpty()){
+            if(earthquakes!=null && !earthquakes.isEmpty()){
                 mAdapter.addAll(earthquakes);
             }
         }
