@@ -34,47 +34,53 @@ public class EarthquakeActivity extends AppCompatActivity {
     private static String queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private EarthquakeListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        List<Earthquake> earthquakes = QueryUtils.extractEarthquakes(queryUrl);
-
-
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
 
         // Create a new {@link ArrayAdapter} of earthquakes
-        final EarthquakeListAdapter adapter = new EarthquakeListAdapter(this, earthquakes);
+        mAdapter = new EarthquakeListAdapter(this, new ArrayList<Earthquake>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+        earthquakeListView.setAdapter(mAdapter);
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Earthquake earthquake = adapter.getItem(i);
+                Earthquake earthquake = mAdapter.getItem(i);
                 Uri earthquakeURI = Uri.parse(earthquake.getDetailURL());
                 Intent intent = new Intent(Intent.ACTION_VIEW, earthquakeURI);
                 startActivity(intent);
 
             }
         });
+        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
+        task.execute(queryUrl);
     }
     private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>>{
 
         @Override
-        protected List<Earthquake> doInBackground(String... strings) {
-            return null;
+        protected List<Earthquake> doInBackground(String... urls) {
+            if(urls.length < 1 && urls[0] == null){
+                return null;
+            }
+            List<Earthquake> result = QueryUtils.extractEarthquakes(urls[0]);
+            return result;
         }
 
         @Override
         protected void onPostExecute(List<Earthquake> earthquakes) {
-            super.onPostExecute(earthquakes);
+            mAdapter.clear();
+            if(earthquakes!=null && earthquakes.isEmpty()){
+                mAdapter.addAll(earthquakes);
+            }
         }
     }
 }
